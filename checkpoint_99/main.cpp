@@ -11,7 +11,7 @@ namespace fs = std::filesystem;
 
 void generate_data()
 {
-    int num_to_generate = 10;
+    int num_to_generate = 3;
 
     std::random_device rd;
     std::mt19937 gen{rd()};
