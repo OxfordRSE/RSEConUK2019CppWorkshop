@@ -1,4 +1,5 @@
 #include <chrono>
+#include <cstdlib>
 #include <execution>
 #include <filesystem>
 #include <fstream>
@@ -51,7 +52,7 @@ int main()
 
     // Find all files like *_rse_workshop.dat under a specific directory
     std::vector<fs::path> data_files;
-    for (auto &p : fs::recursive_directory_iterator("/home/fergus/GitRepos"))
+    for (auto &p : fs::recursive_directory_iterator(std::getenv("HOME")))
     {
         if (p.path().string().ends_with("_rse_workshop.dat"))
         {
