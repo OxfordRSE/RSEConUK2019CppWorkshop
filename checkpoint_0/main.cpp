@@ -6,32 +6,6 @@
 #include <iterator>
 #include <vector>
 
-// An optimized version of Bubble Sort
-void bubbleSort(std::vector<double> &v)
-{
-    int i, j;
-    double temp;
-    bool swapped;
-    for (i = 0; i < v.size() - 1; i++)
-    {
-        swapped = false;
-        for (j = 0; j < v.size() - i - 1; j++)
-        {
-            if (v[j] > v[j + 1])
-            {
-                temp = v[j];
-                v[j] = v[j + 1];
-                v[j + 1] = temp;
-                swapped = true;
-            }
-        }
-
-        // IF no two elements were swapped by inner loop, then break
-        if (swapped == false)
-            break;
-    }
-}
-
 int main()
 {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +24,7 @@ int main()
         std::cout << data_files[i] << std::endl;
     }
 
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 2. Calculate the mean and standard deviation of some data
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +34,7 @@ int main()
     std::vector<double> v{std::istream_iterator<double>(f), std::istream_iterator<double>()};
 
     // Compute mean
-    double sum = 0;
+    double sum = 0.0;
     for (int i = 0; i < v.size(); i++)
     {
         sum += v[i];
@@ -67,7 +42,7 @@ int main()
     const double mean = sum / v.size();
 
     // Compute standard deviation
-    sum = 0;
+    sum = 0.0;
     for (int i = 0; i < v.size(); i++)
     {
         sum += v[i] * v[i];
@@ -77,66 +52,87 @@ int main()
     // Compute variance
     const double std = std::sqrt(var);
 
+    std::cout << "mean:   " << mean << '\n';
+    std::cout << "var:    " << var << '\n';
 
 
-
-    auto t1 = std::chrono::high_resolution_clock::now();
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 3. Calculate the skewness - there's no default algorithm for that!
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Compute skewness
-    sum = 0;
-    double one_over_sigma3 = 1. / (std * std * std);
+    sum = 0.0;
+    double one_over_sigma3 = 1.0 / (std * std * std);
     for (int i = 0; i < v.size(); i++)
     {
         sum += (v[i] - mean) * (v[i] - mean) * (v[i] - mean) * one_over_sigma3;
     }
     const double skew = sum / v.size();
 
-    // Compute median
-    std::vector<double> v2{v};
-    bubbleSort(v2);
+    std::cout << "skew:   " << skew << '\n';
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 4. Calculate the median (and bonus chrono)
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+
+    // Take a copy of the vector so we can sort it
+    std::vector<double> v2 = v;
+
+    std::sort(v2.begin(), v2.end());
     int half_way = v2.size() / 2;
     const double median = v2[half_way];
 
     auto t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> ms = t2 - t1;
-    std::cout << std::fixed << "sequential took " << ms.count() << " ms\n";
+    std::cout << std::fixed << "median took " << ms.count() << " ms\n";
 
-    std::cout << "mean:   " << mean << '\n';
-    std::cout << "var:    " << var << '\n';
-    std::cout << "skew:   " << skew << '\n';
     std::cout << "median: " << median << '\n';
 
-    // Any of the elements > 50?
-    // for (int i=0;i<v.size();i++){
-    //   if(v[i]>50){
-    //     std::cout << v[i] << " ";}
-    // }
-    std::cout << std::endl;
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 5. What other algorithms are there?
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Are any of the elements > 50?
+    bool any_greater_than_50 = false;
+
+    for (int i = 0; i < v.size(); i++)
+    {
+        if (v[i] > 50.0)
+        {
+            any_greater_than_50 = true;
+        }
+    }
+
+    std::cout << std::boolalpha << "Any greater than 50? " << any_greater_than_50 << '\n';
+
+    // First position where consecutive elements differ by more than twice the standard deviation
     int dist = 0;
     double first, second;
     for (int i = 0; i < v.size() - 1; i++)
     {
-        if (abs(v[i + 1] - v[i]) > 2 * std)
+        if (std::fabs(v[i + 1] - v[i]) > 2 * std)
         {
             dist = i;
             first = v[i];
             second = v[i + 1];
             break;
-            std::cout << "here" << std::endl;
         }
     }
-    if (dist)
+    if (dist > 0)
     {
         std::cout << "Position " << dist << ", first " << first << " second: " << second << '\n';
     }
     else
     {
-        std::cout << "Could not find any valid position" << std::endl;
+        std::cout << "Didn't happen..." << std::endl;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// Writing some data back out to a csv file
+    /// 6. Writing some data back out to a csv file
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     std::string output_dir = "./output";

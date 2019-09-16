@@ -67,18 +67,15 @@ int main()
     std::cout << "median: " << median << '\n';
 
     // Any of the elements > 50?
-    std::cout << std::any_of(v.begin(), v.end(), [](const double x) { return x > 50.0; }) << '\n';
+    const bool any_greater_than_50 = std::any_of(v.begin(), v.end(), [](const double x) { return x > 50.0; });
+    std::cout << std::boolalpha << "Any greater than 50? " << any_greater_than_50 << '\n';
 
     // First position where consecutive elements differ by more than twice the standard deviation
     auto threshold = [std](const double x, const double y) { return std::fabs(x - y) < 2.0 * std; };
-    auto answer = std::mismatch(v.begin(), std::prev(v.end()), std::next(v.begin()), threshold);
+    const auto answer = std::mismatch(v.begin(), std::prev(v.end()), std::next(v.begin()), threshold);
 
-    auto dist = std::distance(v.begin(), answer.first);
-
+    const auto dist = std::distance(v.begin(), answer.first);
     std::cout << "Position " << dist << ", first " << *answer.first << " second: " << *answer.second << '\n';
-
-    //  std::cout << mean << '\n';
-    //  std::cout << std << '\n';
 
 
     // Create a new directory under the build directory
