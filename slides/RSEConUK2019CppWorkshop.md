@@ -99,7 +99,7 @@ Next, let's configure, build and run the first checkpoint to ensure everything i
 ~~~bash
 cd ~/RSEConUK2019CppWorkshop/build
 cmake ..
-cmake --build checkpoint_0
+make checkpoint_0
 ./checkpoint_0
 ~~~
 
