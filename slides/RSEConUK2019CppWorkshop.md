@@ -13,29 +13,106 @@ C++ was first standardised as *ISO/IEC 14882:1998* (C++98), and since then:
 
 ## A (very quick) overview of C++11
 
-- Feature
+- type inference (`auto`{.cpp})
+- move semantics
+- uniform initialisation
+- compile time programming (`constexpr`{.cpp})
+- atomic operations
+- variadic templates
+- lambda expressions
+- range-based `for`{.cpp} loops
+- `<random>`{.cpp} number generation
+- `<chrono>`{.cpp} time library
+- *much, much more*
 
 ## A (very quick) overview of C++14
 
-- Feature
+- more `constexpr`{.cpp}
+- improved lambda support
+- function return-type deduction
+- digit separators
+- standard user-defined literals
 
 ## A (very quick) overview of C++17
 
-- Feature
+- more `constexpr`{.cpp}
+- cross-platform filesystem library
+- parallel STL algorithms
+- structured bindings
+- class template argument deduction
+- mathematical special functions (`std::riemann_zeta`{.cpp}, ...)
+- `std::string_view`{.cpp}
+- `std::optional`{.cpp}, `std::any`{.cpp}, and `std::variant`{.cpp}
 
 ## A (very quick) overview of C++20
 
-- Feature
+- more `constexpr`{.cpp}
+- concepts
+- modules
+- ranges
+- coroutines
+- 'spaceship' `operator<=>`
+- calendar and timezone support
+- designated initializers
+- `<version>`{.cpp} header
+- `std::source_location`{.cpp}
+ 
 
 ## Is this all a bit overwhelming?
 
-How are you supposed to know which features to use?
+How are you supposed to know which features to use and how to use them well?
 
-- C++ core guidelines
+The trend in C++ has been to add features and then recommend a **reduced subset** of features and some **best practices** that will allow developers to write code that is:
+
+- easier to write
+- easier to read
+- safer and less prone to errors
+- with better performance by default
+ 
+
+## Is this all a bit overwhelming?
+
+To help navigate the labyrinth of new features and best practices, we have the [C++ core guidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) together with a raft of static analysis tools such as [clang tidy](https://clang.llvm.org/extra/clang-tidy/).
+
+But the best way to learn is to play around with new features, and that's what we're going to do today.
+
+## Workshop overview
+
+Today we are going to modernise some C++ code!
+
+The code is broken into a number of checkpoints, and each practical session will get us from one checkpoint to the next.
+
+First, let's:
+
+- Log in to the VM with the details provided
+- Grab the latest changes:
+
+~~~bash
+cd ~/RSEConUK2019CppWorkshop
+git pull
+~~~
+
+## Workshop overview
+
+Next, let's configure, build and run the first checkpoint to ensure everything is working for everyone in the room:
+
+~~~bash
+cd ~/RSEConUK2019CppWorkshop/build
+cmake ..
+cmake --build checkpoint_0
+./checkpoint_0
+~~~
+
+Now, let's have a quick look through the code together.
+Use your favourite text editor (`CLion`, `VSCode` and `Emacs` are all installed on the VM), open:
+
+~~~bash
+~/RSEConUK2019CppWorkshop/checkpoint_0/main.cpp
+~~~
 
 ## Part 1 — The filesystem library
 
-## Index-based `for` loop
+## Part 2 - the `for` loop
 
 Let's say we have a vector.
 The first way we were probably all taught to loop over the contents of a vector was with an index-based `for`{.cpp} loop:
@@ -183,3 +260,7 @@ for (const auto& x: v) {
    std::cout << x << std::endl;  // x is a const reference
 }
 ~~~
+
+## Moving beyond the `for` loop: STL algorithms
+
+Having just told you about...
