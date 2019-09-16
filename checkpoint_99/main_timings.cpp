@@ -135,7 +135,5 @@ int main()
 	    << any_of.count() << ", "
 	    << mismatch.count() << ", "
 	    << std::endl;
-      
-
     return 0;
 }

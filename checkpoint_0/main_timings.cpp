@@ -150,7 +150,6 @@ int main()
   }
 
   std::ofstream timings("timings.csv", std::ios::app);
-  timings << "0, ";
   timings << std::fixed << readData.count() << ", "
 	  << reduce.count() << ", "
 	  << transform_reduce.count() << ", "
