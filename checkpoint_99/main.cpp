@@ -10,45 +10,11 @@
 
 namespace fs = std::filesystem;
 
-void generate_data()
-{
-    int num_to_generate = 3;
-
-    std::random_device rd;
-    std::mt19937 gen{rd()};
-
-    std::uniform_real_distribution real_dist_mean(10.0, 60.0);
-    std::uniform_real_distribution real_dist_std(3.0, 8.0);
-
-    for (int i = 0; i < num_to_generate; ++i)
-    {
-        std::normal_distribution<double> norm(real_dist_mean(gen), real_dist_std(gen));
-
-        std::ofstream f("/home/fergus/GitRepos/OxfordRSE/OxfordRSEProjects/RSEConUK2019CppWorkshop/data/" +
-                        std::to_string(i) + "_rse_workshop.dat");
-
-        f << norm(gen);
-        for (int j = 0; j < 1000; ++j)
-        {
-            f << ' ' << norm(gen);
-        }
-        f.close();
-    }
-}
-
 int main()
 {
-
-    // Create a new directory under the build directory
-    auto build_dir = fs::canonical(fs::path{"."});
-    auto output_dir = build_dir / "output";
-    fs::create_directories(output_dir);
-
-    // Create an output file
-    auto output_file = output_dir / "results.dat";
-    std::ofstream(output_file) << "blahhhhhhh";
-
-    //  generate_data();
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 1. Reading some data in from a file
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Find all files like *_rse_workshop.dat under a specific directory
     std::vector<fs::path> data_files;
@@ -60,14 +26,17 @@ int main()
         }
     }
 
-    std::sort(data_files.begin(), data_files.end());
-
     // Which data files did we find? (range-for loop)
-    for (auto &d : data_files)
+    for (const auto &d : data_files)
     {
-        std::cout << d << '\n';
+        std::cout << d << std::endl;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 2. Calculate the mean and standard deviation of some data
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Read some data in
     std::ifstream f(data_files[0]);
     std::vector<double> v{std::istream_iterator<double>(f), std::istream_iterator<double>()};
 
@@ -110,6 +79,16 @@ int main()
 
     //  std::cout << mean << '\n';
     //  std::cout << std << '\n';
+
+
+    // Create a new directory under the build directory
+    auto build_dir = fs::canonical(fs::path{"."});
+    auto output_dir = build_dir / "output";
+    fs::create_directories(output_dir);
+
+    // Create an output file
+    auto output_file = output_dir / "results.dat";
+    std::ofstream(output_file) << "blahhhhhhh";
 
     return 0;
 }
