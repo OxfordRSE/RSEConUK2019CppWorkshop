@@ -85,7 +85,7 @@ The code is broken into a number of checkpoints, and each practical session will
 First, let's:
 
 - Log in to the VM with the details provided
-- Grab the latest changes:
+- Grab the latest version:
 
 ~~~bash
 cd ~/RSEConUK2019CppWorkshop
@@ -103,16 +103,41 @@ make checkpoint_0
 ./checkpoint_0
 ~~~
 
+## Workshop overview
+
 Now, let's have a quick look through the code together.
+
 Use your favourite text editor (`CLion`, `VSCode` and `Emacs` are all installed on the VM), open:
 
 ~~~bash
 ~/RSEConUK2019CppWorkshop/checkpoint_0/main.cpp
 ~~~
 
-## Part 1 — The filesystem library
+## Part 1 — The [filesystem](https://en.cppreference.com/w/cpp/filesystem) library
 
-## Part 2 - the `for` loop
+C++17 added a filesystem library!
+
+- It's very similar to the boost filesystem library on which it's based
+- It has intuitive syntax
+- It has useful utilities for dealing with files and directories
+- It works well across platforms
+- Where possible, we should **always** use it when dealing with files
+
+## Part 1 — The [filesystem](https://en.cppreference.com/w/cpp/filesystem) library
+
+~~~cpp
+namespace fs = std::filesystem;  // names can be a bit verbose
+
+fs::path p = fs::path("base") / "subdir" / "file.ext";
+std::cout << p << '\n';
+
+const bool exists = fs::exists(p);
+
+fs::path new_dir = fs::path(".") / "some" / "new" / "dir";
+fs::create_directories(new_dir);
+~~~
+
+## Part 1a - the `for` loop
 
 Let's say we have a vector.
 The first way we were probably all taught to loop over the contents of a vector was with an index-based `for`{.cpp} loop:
@@ -261,6 +286,82 @@ for (const auto& x: v) {
 }
 ~~~
 
+## Task 1
+
+We currently have hardcoded paths to three data files. That's not great!
+
+Write some code that will:
+
+- Recursively search through your entire home directory
+- Add any data files that end with `"_rse_workshop.dat"`{.cpp} to a `std::vector<fs::path>`{.cpp}
+  - hint: strings have a `.ends_with()` method since C++20
+- Print out all the data files you found
+
 ## Moving beyond the `for` loop: STL algorithms
 
 Having just told you about...
+
+
+## Task 2
+
+We're currently using a `for`{.cpp} loop to calculate the mean and the variance. Yuck!
+
+Replace those for loops with:
+
+- Algorithms!
+- First, try `std::accumulate`{.cpp} and `std::inner_product`{.cpp}
+- Then, try `std::reduce`{.cpp} and `std::transform_reduce`{.cpp}
+
+
+## Task 3
+
+We're currently using a `for`{.cpp} loop to calculate the skew. Yuck!
+
+Replace that for loop with a call to `std::transform_reduce`{.cpp}
+
+- You'll need to write your own Lambda, which might
+  - capture `mean` and `std`
+  - take a `double`{.cpp} as parameter
+
+
+## Part 4 - other [algorithms](https://en.cppreference.com/w/cpp/algorithm)
+
+There are many algorithms in the standard library!
+
+It is well worth having a good working knowledge of what is available
+
+- Some would be hard to implement efficiently yourself
+- Many save you a lot of code
+- All make your intent clearer to the compiler
+- Most make your intent clearer to other humans
+
+
+## Part 4a - a [`<chrono>`](https://en.cppreference.com/w/cpp/chrono) digression
+
+`<chrono>` tracks time, and is one of the real gems of C++11.
+
+It's also been updated for C++20 with calendar and timezone support!
+
+~~~cpp
+auto t1 = std::chrono::high_resolution_clock::now();
+auto t2 = std::chrono::high_resolution_clock::now();
+
+std::chrono::duration<double, std::milli> ms = t2 - t1;
+std::cout << ms.count() << " ms\n";
+~~~
+
+
+## Task 4
+
+First:
+
+- Take 5-10 minutes to **read** the list of algorithms
+- Click through onto any that you think sound interesting
+- Look at some of the examples - get a feel for what is available!
+
+Then:
+
+- Select an appropriate algorithm to calculate the **median** in section 4
+- Observe whether your new version is faster than the original. Why (or why not)?
+
+
