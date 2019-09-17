@@ -9,10 +9,13 @@ add_executable(checkpoint_2 checkpoint_2/main.cpp)
 add_executable(checkpoint_3 checkpoint_3/main.cpp)
 add_executable(checkpoint_4 checkpoint_4/main.cpp)
 add_executable(checkpoint_5 checkpoint_5/main.cpp)
+add_executable(checkpoint_6 checkpoint_6/main.cpp)
+
 add_executable(checkpoint_99 checkpoint_99/main.cpp)
 
 # Currently need to link in TBB for parallel STL
 find_library(TBB NAMES libtbb.so)
+target_link_libraries(checkpoint_6 ${TBB})
 target_link_libraries(checkpoint_99 ${TBB})
 
 option(SLIDES "Add target for making slides" OFF)
