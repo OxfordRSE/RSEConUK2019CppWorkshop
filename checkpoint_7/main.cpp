@@ -1,11 +1,13 @@
+#include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <cstdlib>
 #include <execution>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <numeric>
-#include <random>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -44,34 +46,48 @@ int main()
     std::ifstream f(data_files[0]);
     std::vector<double> v{std::istream_iterator<double>(f), std::istream_iterator<double>()};
 
-    const double mean = std::reduce(v.begin(), v.end(), 0.0) / v.size();
-    const double var = std::transform_reduce(v.begin(), v.end(), v.begin(), 0.0) / v.size() - mean * mean;
+    const double mean = std::reduce(std::execution::par, v.begin(), v.end(), 0.0) / v.size();
+    const double var =
+        std::transform_reduce(std::execution::par_unseq, v.begin(), v.end(), v.begin(), 0.0) / v.size() - mean * mean;
     const double std = std::sqrt(var);
 
-    // Lambdas
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 3. Calculate the skewness - there's no default algorithm for that!
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Compute skewness
+    auto third_moment = [mean, std](const double x) { return std::pow((x - mean) / std, 3); };
+    const double skew =
+        std::transform_reduce(std::execution::par, v.begin(), v.end(), 0.0, std::plus<>(), third_moment) / v.size();
+
+    std::cout << "skew:   " << skew << '\n';
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 4. Calculate the median (and bonus chrono)
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     auto t1 = std::chrono::high_resolution_clock::now();
 
-    auto third_moment = [mean, std](const double x) { return std::pow((x - mean) / std, 3); };
-    const double skew = std::transform_reduce(v.begin(), v.end(), 0.0, std::plus<>(), third_moment) / v.size();
+    // Take a copy of the vector so we can sort it
+    std::vector<double> v2 = v;
 
-    std::vector<double> v2{v};
     auto half_way = v2.size() / 2;
-
-    std::nth_element(v2.begin(), std::next(v2.begin(), half_way), v2.end());
+    std::nth_element(std::execution::par, v2.begin(), std::next(v2.begin(), half_way), v2.end());
     const double median = v2.at(half_way);
 
     auto t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> ms = t2 - t1;
-    std::cout << std::fixed << "sequential took " << ms.count() << " ms\n";
+    std::cout << std::fixed << "median took " << ms.count() << " ms\n";
 
-    std::cout << "mean:   " << mean << '\n';
-    std::cout << "var:    " << var << '\n';
-    std::cout << "skew:   " << skew << '\n';
     std::cout << "median: " << median << '\n';
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 5. What other algorithms are there?
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     // Any of the elements > 50?
-    const bool any_greater_than_50 = std::any_of(v.begin(), v.end(), [](const double x) { return x > 50.0; });
+    const bool any_greater_than_50 =
+        std::any_of(std::execution::unseq, v.begin(), v.end(), [](const double x) { return x > 50.0; });
     std::cout << std::boolalpha << "Any greater than 50? " << any_greater_than_50 << '\n';
 
     // First position where consecutive elements differ by more than twice the standard deviation
@@ -81,6 +97,9 @@ int main()
     const auto dist = std::distance(v.begin(), answer.first);
     std::cout << "Position " << dist << ", first " << *answer.first << " second: " << *answer.second << '\n';
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// 7. Writing some data back out to a csv file - pulling several concepts together
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Create a new directory under the build directory
     auto build_dir = fs::canonical(fs::path{"."});
@@ -92,6 +111,4 @@ int main()
     output_file << std::accumulate(v.begin(), v.end(), std::to_string(v[0]),
         [](std::string a, double b) { return std::move(a) + ',' + std::to_string(b); });
     output_file.close();
-
-    return 0;
 }
