@@ -50,6 +50,9 @@ int main()
     const double var = std::transform_reduce(v.begin(), v.end(), v.begin(), 0.0) / v.size() - mean * mean;
     const double std = std::sqrt(var);
 
+    std::cout << "mean:   " << mean << '\n';
+    std::cout << "var:    " << var << '\n';
+
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 3. Calculate the skewness - there's no default algorithm for that!
