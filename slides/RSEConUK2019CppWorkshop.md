@@ -365,3 +365,51 @@ Then:
 - Observe whether your new version is faster than the original. Why (or why not)?
 
 
+## Task 5 - even more algorithms!
+
+There are another two operations on `v` being performed in Section 5.  Try to replace those with appropriate algorithms.
+
+Then, spend some time playing around with some other algorithms:
+
+- Either on `v`, or a new container you create yourself
+- What does `std::rotate` do?
+- Can you think of a use-case for `std::next_permutation`?
+- Have you ever written your own `std::max_element`?
+
+
+## Part 6 - parallel [`<execution>`](https://en.cppreference.com/w/cpp/header/execution)? Out of the box?!
+
+That's right - C++ 17 supports* parallel execution out-of-the-box.
+
+You can add:
+
+~~~cpp
+std::execution::seq        // sequential
+std::execution::par        // parallel
+std::execution::par_unseq  // parallel and vectorised
+std::execution::unseq      // C++20: vectorised
+~~~
+
+as the first parameter to all parallel algorithms.
+
+
+## Task 6
+
+- Go back through all the algorithms you have used, and add execution policies to them
+- Think about where it would be appropriate to do so
+- Time some examples with and without different policies
+  - Are they faster? No? Why not?
+
+
+## Task 7
+
+The final task. Section 7 puts the contents of `v` back out to a file in CSV format using some hard-coded directory and file manipulations, and with a naked `for`{.cpp} loop.
+
+We don't like that much at all.
+
+Drawing on the filesystem library, standard algorithms, and maybe some lateral thinking, have a go at rewriting this section of code.
+
+
+## That's all, folks
+
+Closing remarks.
