@@ -4,6 +4,8 @@ project(RSEConUK2019CppWorkshop LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(checkpoint_0 checkpoint_0/main.cpp)
+add_executable(checkpoint_1 checkpoint_1/main.cpp)
+add_executable(checkpoint_2 checkpoint_2/main.cpp)
 add_executable(checkpoint_99 checkpoint_99/main.cpp)
 
 # Currently need to link in TBB for parallel STL

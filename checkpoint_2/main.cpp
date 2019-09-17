@@ -1,10 +1,15 @@
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <numeric>
 #include <vector>
+
+namespace fs = std::filesystem;
 
 int main()
 {
@@ -12,16 +17,24 @@ int main()
     /// 1. Reading some data in from a file
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Find some pre-prepared data files
-    std::vector<std::string> data_files;
-    data_files.push_back("../data/0_rse_workshop.dat");
-    data_files.push_back("../data/1_rse_workshop.dat");
-    data_files.push_back("../data/2_rse_workshop.dat");
-
-    // Do something with each of the files...
-    for (int i = 0; i < data_files.size(); ++i)
+    // Find all files like *_rse_workshop.dat under a specific directory
+    std::vector<fs::path> data_files;
+    for (auto &p : fs::recursive_directory_iterator(std::getenv("HOME")))
     {
-        std::cout << data_files[i] << std::endl;
+        if (p.path().string().ends_with("_rse_workshop.dat"))
+        {
+            data_files.emplace_back(p.path());
+        }
+    }
+
+    // This is just to make sure the same file is first, so the numbers later are the same on each version.
+    // The sort isn't necessary!
+    std::sort(data_files.begin(), data_files.end());
+
+    // Which data files did we find? (range-for loop)
+    for (const auto &d : data_files)
+    {
+        std::cout << d << std::endl;
     }
 
 
@@ -33,27 +46,9 @@ int main()
     std::ifstream f(data_files[0]);
     std::vector<double> v{std::istream_iterator<double>(f), std::istream_iterator<double>()};
 
-    // Compute mean
-    double sum = 0.0;
-    for (int i = 0; i < v.size(); i++)
-    {
-        sum += v[i];
-    }
-    const double mean = sum / v.size();
-
-    // Compute standard deviation
-    sum = 0.0;
-    for (int i = 0; i < v.size(); i++)
-    {
-        sum += v[i] * v[i];
-    }
-    const double var = sum / v.size() - mean * mean;
-
-    // Compute variance
+    const double mean = std::reduce(v.begin(), v.end(), 0.0) / v.size();
+    const double var = std::transform_reduce(v.begin(), v.end(), v.begin(), 0.0) / v.size() - mean * mean;
     const double std = std::sqrt(var);
-
-    std::cout << "mean:   " << mean << '\n';
-    std::cout << "var:    " << var << '\n';
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,7 +56,7 @@ int main()
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Compute skewness
-    sum = 0.0;
+    double sum = 0.0;
     double one_over_sigma3 = 1.0 / (std * std * std);
     for (int i = 0; i < v.size(); i++)
     {
