@@ -297,9 +297,46 @@ Write some code that will:
   - hint: strings have a `.ends_with()` method since C++20
 - Print out all the data files you found
 
-## Moving beyond the `for` loop: STL algorithms
+## Part 2 - Moving beyond the `for` loop: STL algorithms
 
-Having just told you about...
+Having just told you about all the great new ways you can write a `for`{.cpp} loop, we're going to spend the rest of the workshop trying to convince you to use them as little as possible!
+
+~~~cpp
+std::vector v = {1, 2, 3, 4, 5};
+
+// Option 1
+int sum1 = 0;
+for (const double x : v) {
+   sum += x;
+}
+
+// Option 2 (<numeric> header)
+const int sum2 = std::accumulate(v.begin(), v.end(), 0);
+~~~
+
+
+## Using the [algorithms](https://en.cppreference.com/w/cpp/algorithm) library
+
+Things about option 2:
+
+- `sum2` is `const`{.cpp}
+- the operation has an explicit name (accumulate)
+- you are conveying your intent to the compiler
+- it's more concise
+- it requires another header...
+
+
+## Using the [algorithms](https://en.cppreference.com/w/cpp/algorithm) library
+
+There are algorithms for:
+
+- Adding things up (`std::accumulate`{.cpp}, `std::reduce`{.cpp})
+- Doing "something" to a range (`std::transform`{.cpp})
+- Doing "something" to a range and then adding up (`std::inner_product`{.cpp}, `std::transform_reduce`{.cpp})
+- Sorting (`std::sort`{.cpp})
+- Rotating (`std::rotate`{.cpp})
+- Permuting (`std::next_permutation`{.cpp})
+- Many, many other things
 
 
 ## Task 2
@@ -311,6 +348,25 @@ Replace those for loops with:
 - Algorithms!
 - First, try `std::accumulate`{.cpp} and `std::inner_product`{.cpp}
 - Then, try `std::reduce`{.cpp} and `std::transform_reduce`{.cpp}
+
+
+## Part 3 - customising algorithms
+
+Many algorithms allow customisation.
+
+~~~cpp
+template< class RandomIt, class Compare >
+void sort( RandomIt first, RandomIt last, Compare comp );
+~~~
+
+Here, `std::sort`{.cpp} is templated over `class Compare`{.cpp} (as well as the iterator type). How can we make use of this customisation point?
+
+There are several ways, but usually the most convenient in modern C++ is the **lambda function**.
+
+
+## The lambda function
+
+
 
 
 ## Task 3
@@ -407,9 +463,21 @@ The final task. Section 7 puts the contents of `v` back out to a file in CSV for
 
 We don't like that much at all.
 
-Drawing on the filesystem library, standard algorithms, and maybe some lateral thinking, have a go at rewriting this section of code.
+Drawing on the filesystem library and standard algorithms, have a go at rewriting this section of code.
 
+- Hint: `std::string`{.cpp} has an `operator+`{.cpp} too
 
 ## That's all, folks
 
-Closing remarks.
+This was only the tiniest tip of the modern C++ iceberg. There are so many great resources available, and here are just a few of them:
+
+- [The C++ Core Guidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+- [CppReference](https://en.cppreference.com/w/)
+- Podcasts and YouTube series
+  - [CppCast](https://cppcast.com/)
+  - [C++ weekly](https://www.youtube.com/user/lefticus1/playlists)
+- Conferences and meetups
+  - [C++ On Sea](https://cpponsea.uk/)
+  - [C++ London](https://www.meetup.com/CppLondon/)
+  
+Thank you for coming!
