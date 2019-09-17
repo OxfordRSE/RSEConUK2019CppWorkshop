@@ -8,6 +8,7 @@ add_executable(checkpoint_1 checkpoint_1/main.cpp)
 add_executable(checkpoint_2 checkpoint_2/main.cpp)
 add_executable(checkpoint_3 checkpoint_3/main.cpp)
 add_executable(checkpoint_4 checkpoint_4/main.cpp)
+add_executable(checkpoint_5 checkpoint_5/main.cpp)
 add_executable(checkpoint_99 checkpoint_99/main.cpp)
 
 # Currently need to link in TBB for parallel STL
