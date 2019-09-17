@@ -26,6 +26,10 @@ int main()
         }
     }
 
+    // This is just to make sure the same file is first, so the numbers later are the same on each version.
+    // The sort isn't necessary!
+    std::sort(data_files.begin(), data_files.end());
+
     // Which data files did we find? (range-for loop)
     for (const auto &d : data_files)
     {
@@ -71,8 +75,8 @@ int main()
     std::cout << std::boolalpha << "Any greater than 50? " << any_greater_than_50 << '\n';
 
     // First position where consecutive elements differ by more than twice the standard deviation
-    auto threshold = [std](const double x, const double y) { return std::fabs(x - y) < 2.0 * std; };
-    const auto answer = std::mismatch(v.begin(), std::prev(v.end()), std::next(v.begin()), threshold);
+    auto comparison = [std](const double x, const double y) { return std::fabs(x - y) < 2.0 * std; };
+    const auto answer = std::mismatch(v.begin(), std::prev(v.end()), std::next(v.begin()), comparison);
 
     const auto dist = std::distance(v.begin(), answer.first);
     std::cout << "Position " << dist << ", first " << *answer.first << " second: " << *answer.second << '\n';
@@ -84,8 +88,10 @@ int main()
     fs::create_directories(output_dir);
 
     // Create an output file
-    auto output_file = output_dir / "results.dat";
-    std::ofstream(output_file) << "blahhhhhhh";
+    std::ofstream output_file(output_dir / "results.dat");
+    output_file << std::accumulate(v.begin(), v.end(), std::to_string(v[0]),
+        [](std::string a, double b) { return std::move(a) + ',' + std::to_string(b); });
+    output_file.close();
 
     return 0;
 }

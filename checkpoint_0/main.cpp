@@ -106,7 +106,6 @@ int main()
             any_greater_than_50 = true;
         }
     }
-
     std::cout << std::boolalpha << "Any greater than 50? " << any_greater_than_50 << '\n';
 
     // First position where consecutive elements differ by more than twice the standard deviation
@@ -122,26 +121,23 @@ int main()
             break;
         }
     }
-    if (dist > 0)
-    {
-        std::cout << "Position " << dist << ", first " << first << " second: " << second << '\n';
-    }
-    else
-    {
-        std::cout << "Didn't happen..." << std::endl;
-    }
+    std::cout << "Position " << dist << ", first " << first << " second: " << second << '\n';
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// 6. Writing some data back out to a csv file
+    /// 7. Writing some data back out to a csv file - pulling several concepts together
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     std::string output_dir = "./output";
-    std::string mkdir_command = "mkdir " + output_dir;
+    std::string mkdir_command = "mkdir -p " + output_dir;
     // System takes a const char* as a parameter
     system(mkdir_command.c_str());
 
     // Create an output file
     std::ofstream output_file(output_dir + "/results.dat");
-    output_file << "blahhhhhhh";
-
+    output_file << v[0];
+    for (int i = 1; i < v.size(); i++)
+    {
+        output_file << ',' << v[i];
+    }
+    output_file.close();
 }
