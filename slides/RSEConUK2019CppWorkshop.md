@@ -366,7 +366,71 @@ There are several ways, but usually the most convenient in modern C++ is the **l
 
 ## The lambda function
 
+You can define a **lambda function** within the current scope:
 
+~~~cpp
+auto empty_lambda = [](){};
+
+auto hello = [](std::string name) {
+      std::cout << "hello " << name << std::endl;
+    };
+
+hello("world");  // prints "hello world"
+~~~
+
+With a lambda function, you **cannot** specify the type, so we rely on the keyword `auto`{.cpp}.
+
+
+## The lambda function
+
+The square brackets **capture** variables from the outside scope, for example
+
+~~~cpp
+int i = 1;
+auto add_i_to_arg = [i](int arg) { return arg + i; };
+std::cout << add_i_to_arg(3) << std::endl;  // prints 4
+~~~
+
+This captures `i` by value. To capture by reference use `&`:
+
+~~~cpp
+int i = 1;
+auto add_arg_to_i = [&i](int arg) { i += arg; };
+add_arg_to_i(3);
+std::cout << i << std::endl; // prints 4
+~~~
+
+## The lambda function
+
+You can capture all variables used in the lambda function using either `[=]`,
+which captures everything by value, or `[&]`, which captures everything by
+reference:
+
+~~~cpp
+int i = 1;
+auto add_i_to_arg = [=](int arg) { return arg + i; };
+std::cout << add_i_to_arg(3) << std::endl; // prints 4
+
+auto add_arg_to_i = [&](int arg) { i += arg; };
+add_arg_to_i(3);
+std::cout << i << std::endl; // prints 4
+~~~
+
+
+## Using lambdas with algorithms
+
+Let's sort a range largest to smallest rather than smallest to largest...
+
+~~~cpp
+
+std::vector v = {4.53, 2.38, 3.45, 9.68};
+
+auto sort_greater = [](double x, double y) { return x > y; };
+std::sort(v.begin(), v.end(), sort_greater);
+
+std::cout << v.at(0) << '\n';  // prints 9.68
+
+~~~
 
 
 ## Task 3
@@ -378,6 +442,7 @@ Replace that for loop with a call to `std::transform_reduce`{.cpp}
 - You'll need to write your own Lambda, which might
   - capture `mean` and `std`
   - take a `double`{.cpp} as parameter
+  - the default binary operation for reducing is `std::plus<>()`{.cpp}
 
 
 ## Part 4 - other [algorithms](https://en.cppreference.com/w/cpp/algorithm)
