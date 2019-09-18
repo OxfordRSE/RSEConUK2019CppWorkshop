@@ -513,6 +513,8 @@ std::execution::unseq      // C++20: vectorised
 
 as the first parameter to all parallel algorithms.
 
+* gcc 10.x requires linking against a newish version of Intel's TBB library
+
 
 ## Task 6
 

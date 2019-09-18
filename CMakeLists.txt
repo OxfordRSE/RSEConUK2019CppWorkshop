@@ -14,6 +14,12 @@ add_executable(checkpoint_7 checkpoint_7/main.cpp)
 
 # Currently need to link in TBB for parallel STL
 find_library(TBB NAMES libtbb.so)
+target_link_libraries(checkpoint_0 ${TBB})
+target_link_libraries(checkpoint_1 ${TBB})
+target_link_libraries(checkpoint_2 ${TBB})
+target_link_libraries(checkpoint_3 ${TBB})
+target_link_libraries(checkpoint_4 ${TBB})
+target_link_libraries(checkpoint_5 ${TBB})
 target_link_libraries(checkpoint_6 ${TBB})
 target_link_libraries(checkpoint_7 ${TBB})
 
