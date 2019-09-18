@@ -1,6 +1,6 @@
 % Getting the most out of the modern C++ language and standard libraries
 % **Oxford RSE @ RSEConUK 2019**
-% Fergus Cooper ~ Graham Lee ~ Thibault Lestang ~ Martin Robinson
+% Fergus Cooper ~ Graham Lee ~ Thibault Lestang ~ Martin Robinson ~ Abhishek Dasgupta
 
 ## C++ has changed a lot
 
@@ -513,7 +513,7 @@ std::execution::unseq      // C++20: vectorised
 
 as the first parameter to all parallel algorithms.
 
-* gcc 10.x requires linking against a newish version of Intel's TBB library
+\* gcc 10.x requires linking against a newish version of Intel's TBB library
 
 
 ## Task 6
