@@ -26,7 +26,7 @@ gs = fig.add_gridspec(2,3)
 fig_ax1 = fig.add_subplot(gs[0,:])
 fig_ax1.set_title("any_of, reduce and transform_reduce")
 fig_ax2 = fig.add_subplot(gs[1,0])
-fig_ax2.set_title("read_data")
+fig_ax2.set_title("write_data")
 fig_ax3 = fig.add_subplot(gs[1,1])
 fig_ax3.set_title("nth_element")
 fig_ax4 = fig.add_subplot(gs[1,2])
@@ -34,7 +34,7 @@ fig_ax4.set_title("mismatch")
 allaxes = fig.get_axes()
 
 things2plot = [["checkpoint","any_of","reduce","transform_reduce"],
-               ["checkpoint", "read_data"],
+               ["checkpoint", "write_data"],
                ["checkpoint", "nth_element"],
                ["checkpoint", "mismatch"]]
 
