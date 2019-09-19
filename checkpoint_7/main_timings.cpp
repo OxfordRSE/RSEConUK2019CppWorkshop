@@ -130,7 +130,7 @@ int main()
     /// Writing timings to csv file checkpoint_xx/timings.csv
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     std::ofstream timings("timings.csv", std::ios::app);
-    timings << std::fixed << readData.count() << ", "
+    timings << std::fixed << writeData.count() << ", "
 	    << reduce.count() << ", "
 	    << transform_reduce.count() << ", "
 	    << nth_element.count() << ", "
