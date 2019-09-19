@@ -97,7 +97,8 @@ git pull
 Next, let's configure, build and run the first checkpoint to ensure everything is working for everyone in the room:
 
 ~~~bash
-cd ~/RSEConUK2019CppWorkshop/build
+cd ~/RSEConUK2019CppWorkshop/
+mkdir -p build && cd build
 cmake ..
 make checkpoint_0
 ./checkpoint_0
@@ -540,6 +541,7 @@ This was only the tiniest tip of the modern C++ iceberg. There are so many great
 
 - [The C++ Core Guidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 - [CppReference](https://en.cppreference.com/w/)
+- [Compiler explorer](https://gcc.godbolt.org/)
 - Podcasts and YouTube series
   - [CppCast](https://cppcast.com/)
   - [C++ weekly](https://www.youtube.com/user/lefticus1/playlists)
