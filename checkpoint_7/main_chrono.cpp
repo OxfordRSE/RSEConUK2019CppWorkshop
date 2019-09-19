@@ -36,12 +36,6 @@ int main()
     // The sort isn't necessary!
     std::sort(data_files.begin(), data_files.end());
 
-    // Which data files did we find? (range-for loop)
-    for (const auto &d : data_files)
-    {
-        std::cout << d << std::endl;
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 2. Calculate the mean and standard deviation of some data
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,7 +123,7 @@ int main()
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Writing timings to csv file checkpoint_xx/timings.csv
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::ofstream timings("timings.csv", std::ios::app);
+    std::ofstream timings("timings_7.csv", std::ios::app);
     timings << std::fixed << writeData.count() << ", "
 	    << reduce.count() << ", "
 	    << transform_reduce.count() << ", "

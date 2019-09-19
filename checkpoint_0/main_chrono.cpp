@@ -22,12 +22,6 @@ int main()
     data_files.push_back("../data/1_rse_workshop.dat");
     data_files.push_back("../data/2_rse_workshop.dat");
 
-    // Do something with each of the files...
-    for (int i = 0; i < data_files.size(); ++i)
-    {
-        std::cout << data_files[i] << std::endl;
-    }
-
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 2. Calculate the mean and standard deviation of some data
@@ -152,7 +146,7 @@ int main()
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// Writing timings to csv file checkpoint_xx/timings.csv
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    std::ofstream timings("timings.csv", std::ios::app);
+    std::ofstream timings("timings_0.csv", std::ios::app);
     timings << std::fixed << writeData.count() << ", "
 	    << reduce.count() << ", "
 	    << transform_reduce.count() << ", "
