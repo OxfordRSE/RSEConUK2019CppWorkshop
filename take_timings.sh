@@ -11,11 +11,14 @@ if [ ! -f "$FILE" ]; then
 fi
 
 rm -i timings_$checkpoint.csv
+cd $builddir
 echo "write_data,reduce,transform_reduce,nth_element,any_of,mismatch" >> timings_$checkpoint.csv
 for i in $(seq 1 $n)
 do
-    ./$FILE
+    ./checkpoint_${checkpoint}_chrono
 done
+mv timings_$checkpoint.csv ../
+cd ../
 	 
 	 
 	 
