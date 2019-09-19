@@ -114,4 +114,10 @@ int main()
     output_file << std::accumulate(v.begin(), v.end(), std::to_string(v[0]),
         [](std::string a, double b) { return std::move(a) + ',' + std::to_string(b); });
     output_file.close();
+
+    // another option using std::copy
+    std::ofstream output_file2(output_dir / "results2.dat");
+    std::copy(v.begin(), v.end(), std::ostream_iterator<double>(output_file2, ","));
+    output_file2.close();
+
 }
