@@ -9,9 +9,9 @@ if len(sys.argv)<2:
 for i in range(len(sys.argv)-1):
     checkpoint = int(sys.argv[i+1])
     try:
-        full_df = pd.read_csv("checkpoint_{:d}/timings.csv".format(checkpoint))
+        full_df = pd.read_csv("timings_{:d}.csv".format(checkpoint))
     except:
-        sys.exit("Error: Could not find file checkpoint_{:d}/timings.csv".format(checkpoint))
+        sys.exit("Error: Could not find file timings_{:d}.csv".format(checkpoint))
         
     full_df["checkpoint"] = [checkpoint]*full_df.shape[0]
     if(i>0):
