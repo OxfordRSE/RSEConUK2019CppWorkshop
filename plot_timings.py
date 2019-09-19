@@ -9,7 +9,7 @@ if len(sys.argv)<2:
 for i in range(len(sys.argv)-1):
     checkpoint = int(sys.argv[i+1])
     try:
-        full_df = pd.read_csv("timings_{:d}.csv".format(checkpoint))
+        full_df = pd.read_csv("timings_{:d}_release.csv".format(checkpoint))
     except:
         sys.exit("Error: Could not find file timings_{:d}.csv".format(checkpoint))
         
@@ -21,7 +21,7 @@ for i in range(len(sys.argv)-1):
 
 
 fig_ax = []
-fig = plt.figure()
+fig = plt.figure(figsize=(20,10))
 gs = fig.add_gridspec(2,3)
 fig_ax1 = fig.add_subplot(gs[0,:])
 fig_ax1.set_title("any_of, reduce and transform_reduce")
@@ -42,8 +42,8 @@ for i in range(len(things2plot)):
     reduced_df = df[things2plot[i]]        
     melted_df = pd.melt(reduced_df, id_vars="checkpoint", var_name="operation", value_name="time")
 
-    allaxes[i].set_title("haha")
+    allaxes[i].set_title("RELEASE")
     sns.barplot(x="operation", y="time", hue="checkpoint", data=melted_df, ax=allaxes[i])
 
-
+plt.savefig("release.png")
 plt.show()
