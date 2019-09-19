@@ -2,7 +2,6 @@
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
-#include <execution>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -45,13 +44,13 @@ int main()
     std::vector<double> v{std::istream_iterator<double>(f), std::istream_iterator<double>()};
     
     t1 = std::chrono::high_resolution_clock::now();
-    const double mean = std::reduce(std::execution::par, v.begin(), v.end(), 0.0) / v.size();
+    const double mean = std::reduce(v.begin(), v.end(), 0.0) / v.size();
     t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> reduce = t2 - t1;
 
     t1 = std::chrono::high_resolution_clock::now();
     const double var =
-        std::transform_reduce(std::execution::par_unseq, v.begin(), v.end(), v.begin(), 0.0) / v.size() - mean * mean;
+        std::transform_reduce(v.begin(), v.end(), v.begin(), 0.0) / v.size() - mean * mean;
     t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> transform_reduce = t2 - t1;
     
@@ -64,7 +63,7 @@ int main()
     // Compute skewness
     auto third_moment = [mean, std](const double x) { return std::pow((x - mean) / std, 3); };
     const double skew =
-        std::transform_reduce(std::execution::par, v.begin(), v.end(), 0.0, std::plus<>(), third_moment) / v.size();
+        std::transform_reduce(v.begin(), v.end(), 0.0, std::plus<>(), third_moment) / v.size();
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /// 4. Calculate the median (and bonus chrono)
@@ -75,7 +74,7 @@ int main()
 
     t1 = std::chrono::high_resolution_clock::now();
     auto half_way = v2.size() / 2;
-    std::nth_element(std::execution::par, v2.begin(), std::next(v2.begin(), half_way), v2.end());
+    std::nth_element(v2.begin(), std::next(v2.begin(), half_way), v2.end());
     const double median = v2.at(half_way);
     t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> nth_element = t2 - t1;
@@ -87,7 +86,7 @@ int main()
     // Any of the elements > 50?
     t1 = std::chrono::high_resolution_clock::now();
     const bool any_greater_than_50 =
-        std::any_of(std::execution::unseq, v.begin(), v.end(), [](const double x) { return x > 50.0; });
+        std::any_of(v.begin(), v.end(), [](const double x) { return x > 50.0; });
     t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> any_of = t2 - t1;
 
