@@ -1,10 +1,16 @@
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <cstdlib>
+#include <execution>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
+#include <numeric>
 #include <vector>
+
+namespace fs = std::filesystem;
 
 int main()
 {
