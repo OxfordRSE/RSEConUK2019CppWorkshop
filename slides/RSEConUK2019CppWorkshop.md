@@ -307,8 +307,8 @@ std::vector v = {1, 2, 3, 4, 5};
 
 // Option 1
 int sum1 = 0;
-for (const double x : v) {
-   sum += x;
+for (const auto x : v) {
+   sum1 += x;
 }
 
 // Option 2 (<numeric> header)
@@ -398,7 +398,7 @@ This captures `i` by value. To capture by reference use `&`:
 int i = 1;
 auto add_arg_to_i = [&i](int arg) { i += arg; };
 add_arg_to_i(3);
-std::cout << i << std::endl; // prints 4
+std::cout << i << std::endl;  // prints 4
 ~~~
 
 ## The lambda function
@@ -414,7 +414,7 @@ std::cout << add_i_to_arg(3) << std::endl; // prints 4
 
 auto add_arg_to_i = [&](int arg) { i += arg; };
 add_arg_to_i(3);
-std::cout << i << std::endl; // prints 4
+std::cout << i << std::endl;  // prints 4
 ~~~
 
 
