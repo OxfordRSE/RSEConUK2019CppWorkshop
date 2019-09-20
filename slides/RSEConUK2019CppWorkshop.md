@@ -355,7 +355,7 @@ Replace those for loops with:
 
 Many algorithms allow customisation.
 
-~~~cpp
+~~~ cpp
 template< class RandomIt, class Compare >
 void sort( RandomIt first, RandomIt last, Compare comp );
 ~~~
@@ -505,7 +505,7 @@ That's right - C++ 17 supports* parallel execution out-of-the-box.
 
 You can add:
 
-~~~cpp
+~~~ cpp
 std::execution::seq        // sequential
 std::execution::par        // parallel
 std::execution::par_unseq  // parallel and vectorised

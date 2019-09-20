@@ -38,4 +38,11 @@ if (SLIDES)
             ${PANDOC} -f markdown -t beamer --highlight-style ${SLIDES_DIR}/pygments_custom.theme
             ${SLIDES_MD} -V theme:metropolis -V aspectratio:169 -o ${SLIDES_PDF}
     )
+
+    find_package (Python3 COMPONENTS Interpreter)
+    add_custom_target(
+            test_slides COMMAND
+            Python3::Interpreter ${SLIDES_DIR}/test_slides.py ${CMAKE_CXX_COMPILER}
+    )
+
 endif ()
